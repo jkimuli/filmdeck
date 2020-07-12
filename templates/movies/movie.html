@@ -1,0 +1,116 @@
+{%extends 'base.html' %}
+{%load static %}
+
+{%block content %}
+
+    {% if movie %}
+    
+    <div class="row">    
+        <div class="col-md-8">
+            <div class="card mb-4 shadow-sm"> 
+                {% with base_url|add:poster_size|add:movie.poster_path as image_url %}
+                  <img class="card-img-top" width="100%" src="{{image_url}}"> 
+                                   
+                <div class="card-body">
+                    <p class="card-text">{{movie.overview}}</p>
+                    <small class="text-muted">Release Date: {{movie.release_date}}</small>
+            
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-outline-info" id="previewBtn">Preview</a>
+
+                            {% if request.user.is_authenticated %}
+                            <a href="#" role="button" class="btn btn-outline-info" id="watchButton"
+                               data-id="{{movie.id}}" data-title="{{movie.title}}" data-image="{{image_url}}"
+                            >Add to watchlist</a>
+                            {%else%}
+                            <a href="#" role="button" class="btn disabled btn-outline-info" 
+                                        id="watchButton" data-id="{{movie.id}}" 
+                                        data-title="{{movie.title}}" data-image="{{movie.image_url}}"
+                                        aria-disabled="true" style="color:gray;pointer-events:none;"
+                            >Add to watchlist</a>
+                               
+                            {%endif%}
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+        </div>
+        
+        <div class="col-md-4">
+            <p>Tags:</p>
+            <p>
+            {% for genre in movie.genres %}
+              <span class="badge badge-pill badge-info">{{genre.name}}</span>
+            {%endfor%}</p>
+
+            <p>Rating: {{movie.vote_average}}</p>
+            <p>Runtime: {{movie.runtime}} minutes</p>
+
+            <p>Box Office: {{movie.revenue}} USD</p>
+
+            <p>Languages:</p>
+                <p>
+                {% for language in movie.spoken_languages%}
+                 <span class="badge badge-pill badge-info">{{language.name}}</span>
+
+                {%endfor%} 
+                </p>
+
+            <p>Homepage:
+                {% if movie.homepage %}
+                  <a href="{{movie.homepage}}">{{movie.title}}</a>
+                {% else %}
+                  <a href="#" style="color:gray; pointer-events:none">{{movie.title}}</a> 
+                {%endif%}  
+            </p>
+            
+             <div class='video d-none' data-embed={{movie.videos.results.0.key}}>                
+
+             </div>
+               
+           
+        </div>
+
+    {%else%}
+
+       <p> Movie not available</p>
+
+    {%endif%}
+</div>
+
+<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+    <div class="toast" data-delay="6000" style="position: absolute; top: 0; right: 0;">
+      <div class="toast-header">
+        <strong class="mr-auto">FilmDeck</strong>
+        <small>Now - 1 sec ago</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        
+      </div>
+    </div>
+</div>
+
+
+{%endblock%}
+
+{%block footer %}
+    <footer class="footer bg-primary">
+        <div class="container text-center">
+        <span class="text-white">Crafted by <a href="https://jkimuli.appspot.com" class="text-white">Julius Kimuli</a> &nbsp;&copy;&nbsp; 2020 </span>
+        </div>
+    </footer>
+
+{%endblock%}  
+
+{%block js_content%}
+
+<script src="{%static 'js/preview.js' %}"></script>
+<script src="{%static 'js/watchlist.js' %}"></script>
+
+{%endblock%}

@@ -1,0 +1,49 @@
+{%extends 'base.html'%}
+{%load static %}
+
+{%block content %}
+
+<h3 class="text-muted"> Welcome, {{request.user}}</h3>
+<h6 class="text-muted mb-4"> Here are the movies that you added to your watchlist!</h6>
+    
+{% if movies %}
+      <div class="row">       
+        
+        {% for movie in movies %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+
+                    <img class="card-img-top" width="100%" src="{{movie.image_url}}">                
+                    
+                    <div class="card-footer bg-info">
+                        <p class="text-white text-center">{{movie.title}}</p>                              
+                                
+                    </div>
+                </div>
+            </div>
+            
+        {%endfor%} 
+
+     </div>
+    
+
+{%else%}
+
+    <img src="{% static 'img/empty.png' %}">     
+        
+{%endif%}
+    
+    <div>
+        <a href="{%url 'movies_list'%}" class=" btn btn-outline-primary">Check our current trending movies</a>
+    </div>    
+
+{%endblock content%}
+
+{%block footer %}
+    <footer class="footer bg-primary">
+        <div class="container text-center">
+        <span class="text-white">Crafted by <a href="https://jkimuli.appspot.com" class="text-white">Julius Kimuli</a> &nbsp;&copy;&nbsp; 2020 </span>
+        </div>
+    </footer>
+
+{%endblock%}  

@@ -1,0 +1,43 @@
+{%extends 'base.html'%}
+{%load static%}
+
+{%block content %}
+
+<div class="row">
+
+    {% if movies %}
+    
+    {% for movie in movies %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm"> 
+                {% with base_url|add:poster_size|add:movie.poster_path as image_url %}
+                <img class="card-img-top" width="100%" src="{{image_url}}"> 
+                {% endwith %}
+                   
+                <div class="card-body">
+                    <p class="card-text">{{movie.overview|truncatechars:160}}</p>               
+                
+                    <a href="{% url 'movie_details' movie.id %}" class="btn btn-info" role="button">Details</a>                   
+                               
+                </div>
+            </div>
+        </div>
+        
+    {%endfor%}    
+
+    {%else%}
+       <p> Failed to fetch the most trending movies</p>
+       <img src="{% static 'img/empty.png' %}"> 
+    {%endif%}
+</div>    
+
+{%endblock content%}
+
+{%block footer %}
+    <footer class="footer bg-primary">
+        <div class="container text-center">
+        <span class="text-white">Crafted by <a href="https://jkimuli.appspot.com" class="text-white">Julius Kimuli</a> &nbsp;&copy;&nbsp; 2020 </span>
+        </div>
+    </footer>
+
+{%endblock%}  
