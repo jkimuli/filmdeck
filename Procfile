@@ -1,0 +1,1 @@
+web: gunicorn filmdeck.wsgi
